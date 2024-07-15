@@ -1,34 +1,9 @@
 import streamlit as st
-import requests
 import json
+from llama_cpp import LLaMA
 
-def stream_content(url, data):
-    """Make a streaming POST request and yield the 'content' part of each JSON response as they arrive."""
-    headers = {'Content-Type': 'application/json'}
-    
-    # If data is a dictionary, convert it to a JSON string
-    if isinstance(data, dict):
-        data = json.dumps(data)
-    
-    # Make a streaming POST request
-    with requests.post(url, data=data, headers=headers, stream=True) as response:
-        # Raise an error for bad responses
-        response.raise_for_status()
-        
-        # Process the stream
-        for chunk in response.iter_lines():
-            if chunk:
-                # Decode chunk from bytes to string
-                decoded_chunk = chunk.decode('utf-8')
-                
-                # Convert string to JSON
-                json_chunk = json.loads(decoded_chunk)
-                
-                # if the model is done generating, return
-                if json_chunk["done"] == True:
-                    return
-                # Yield the 'content' part
-                yield json_chunk["message"]["content"]
+# Initialize LLaMA model
+llama_model = LLaMA("llama")
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -39,11 +14,6 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-request_data = {
-    "model": "dolphin",
-    "messages": []
-}
-
 # Accept user input
 if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
@@ -52,9 +22,16 @@ if prompt := st.chat_input("What is up?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Make streaming request to ollama
+    # Prepare request data
+    request_data = {
+        "prompt": prompt
+    }
+
+    # Send request to LLaMA model
+    response = llama_model.generate(request_data)
+
+    # Display assistant response
     with st.chat_message("assistant"):
-        request_data["messages"] = st.session_state.messages
-        response = st.write_stream(stream_content("http://localhost:11434/api/chat", request_data))
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
+        st.markdown(response)
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": response})
