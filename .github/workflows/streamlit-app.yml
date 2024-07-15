@@ -17,4 +17,4 @@ jobs:
         uses: streamlit/deploy@v1
         with:
           script: app.py
-          port: 8501
+          port: 11434
