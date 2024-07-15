@@ -1,9 +1,9 @@
 import streamlit as st
-from transformers import AutoModelForConversation, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Initialize model and tokenizer
 model_name = "facebook/llama-13b"
-model = AutoModelForConversation.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Use the model and tokenizer for your conversation AI
