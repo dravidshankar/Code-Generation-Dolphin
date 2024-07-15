@@ -1,8 +1,12 @@
 import streamlit as st
-from llm import LLaMA
+from transformers import AutoModelForConversation, AutoTokenizer
 
-# Initialize LLaMA model
-llama_model = LLaMA("llama")
+# Initialize model and tokenizer
+model_name = "facebook/llama-13b"
+model = AutoModelForConversation.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# Use the model and tokenizer for your conversation AI
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -27,7 +31,7 @@ if prompt := st.chat_input("What is up?"):
     }
 
     # Send request to LLaMA model
-    response = llama_model.generate(request_data)
+    response = model.generate(request_data)
 
     # Display assistant response
     with st.chat_message("assistant"):
