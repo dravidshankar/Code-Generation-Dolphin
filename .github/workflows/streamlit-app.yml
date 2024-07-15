@@ -1,0 +1,20 @@
+name: Streamlit App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Deploy Streamlit app
+        uses: streamlit/deploy@v1
+        with:
+          script: app.py
+          port: 8501
