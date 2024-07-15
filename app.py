@@ -1,6 +1,5 @@
 import streamlit as st
-import json
-from llama_cpp import LLaMA
+from llm import LLaMA
 
 # Initialize LLaMA model
 llama_model = LLaMA("llama")
