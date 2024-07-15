@@ -1,4 +1,4 @@
 streamlit
 requests
 # Update the package version to be compatible with Python 3.5+
-package_name>=1.0; python_version>='3.5'
+package_name>=1.0; python_version<'3.5'
