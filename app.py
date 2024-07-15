@@ -2,7 +2,7 @@ import streamlit as st
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Initialize model and tokenizer
-model_name = "facebook/llama-13b"
+model_name = "llm-llama-base"
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
