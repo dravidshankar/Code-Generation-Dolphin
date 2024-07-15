@@ -16,5 +16,5 @@ jobs:
       - name: Deploy Streamlit app
         uses: streamlit/deploy@v1
         with:
-          script: app.py
+          script: Code-Generation-Dolphin/app.py
           port: 8501
